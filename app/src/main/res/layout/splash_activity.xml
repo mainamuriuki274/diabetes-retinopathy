@@ -20,8 +20,10 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="250dp"
-            tools:srcCompat="@drawable/eye" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="0dp"
+            android:src="@drawable/eye" />
 
         <TextView
             android:id="@+id/appname"
