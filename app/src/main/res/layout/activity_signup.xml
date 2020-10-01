@@ -14,15 +14,15 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:contentPaddingTop="20dp">
+            android:layout_height="80dp"
+            app:cardBackgroundColor="@color/colorPrimary" >
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageView8"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:src="@drawable/eye" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/clean" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -36,7 +36,7 @@
                 android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="20dp">
+                android:paddingTop="30dp">
 
                 <TextView
                     android:id="@+id/textView5"
@@ -112,12 +112,12 @@
                     android:inputType="textPassword" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/sign_up"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/more_rounded_button"
-                    android:text="Sign in"
+                    android:text="Sign up"
                     android:textColor="@color/colorPrimaryLight" />
 
                 <ProgressBar
@@ -147,7 +147,7 @@
                         android:textColor="@color/colorPrimary" />
 
                     <TextView
-                        android:id="@+id/signup_link"
+                        android:id="@+id/signin_link"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"

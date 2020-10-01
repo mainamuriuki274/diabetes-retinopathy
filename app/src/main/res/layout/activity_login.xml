@@ -15,9 +15,9 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="255dp"
+            android:layout_height="200dp"
             app:cardBackgroundColor="@color/colorPrimary"
-            app:contentPaddingTop="50dp">
+            app:contentPaddingTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,7 +27,7 @@
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/eye" />
 
                 <TextView
@@ -112,7 +112,7 @@
                     android:inputType="textPassword" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/sign_in"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
