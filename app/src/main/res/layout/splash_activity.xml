@@ -14,40 +14,44 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginRight="0dp"
-            android:src="@drawable/eye" />
-
-        <TextView
-            android:id="@+id/appname"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logo"
-            android:fontFamily="sans-serif"
-            android:text="@string/appname"
-            android:textAlignment="center"
-            android:textColor="@color/Secondary"
-            android:textSize="80sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginRight="0dp"
+                android:src="@drawable/eye"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/appname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/appname"
+                android:textAlignment="center"
+                android:textColor="@color/Secondary"
+                android:textSize="80sp"
+                android:gravity="center"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/slogan"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:fontFamily="cursive"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="25sp"
-            android:textAlignment="center"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:paddingBottom="10dp"
             android:text="@string/slogan"
-            android:paddingBottom="10dp"/>
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="25sp" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
