@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
     Button sign_in;
     TextView sign_up;
@@ -15,8 +17,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
-            sign_in = (Button)findViewById(R.id.sign_in);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+            sign_in = findViewById(R.id.sign_in_btn);
         sign_in.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -24,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
                startActivity(i);
             }
         });
-        sign_up = (TextView)findViewById(R.id.signup_link);
+        sign_up = findViewById(R.id.signup_link);
         sign_up.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
