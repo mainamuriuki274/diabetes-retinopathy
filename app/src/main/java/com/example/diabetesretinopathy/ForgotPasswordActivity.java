@@ -9,18 +9,18 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
-public class SignupActivity extends AppCompatActivity {
-    TextView sign_in;
+public class ForgotPasswordActivity extends AppCompatActivity {
+    TextView sign_up;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_forgot_password);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        sign_in = findViewById(R.id.signin_link);
-        sign_in.setOnClickListener(new View.OnClickListener() {
+        sign_up = findViewById(R.id.signup_link);
+        sign_up.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Intent i=new Intent(SignupActivity.this,LoginActivity.class);
+                Intent i=new Intent(ForgotPasswordActivity.this,SignupActivity.class);
                 startActivity(i);
             }
         });
