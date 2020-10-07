@@ -124,7 +124,7 @@
                     android:drawingCacheQuality="high"
                     android:indeterminateBehavior="repeat"
                     android:visibility="gone"
-                    />
+                    android:contentDescription="@string/loading" />
 
                 <TextView
                     android:id="@+id/forgot_password_link"
