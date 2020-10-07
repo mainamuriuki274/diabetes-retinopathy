@@ -35,9 +35,9 @@ public class SignupActivity extends AppCompatActivity{
     CheckBox mCheckBoxAgree;
     ImageView mLoading;
     private FirebaseAuth mAuth;
-    private static final String mUsername = "username";
-    private static final String mEmail = "email";
-    private static final String mPassword = "password";
+//    private static final String mUsername = "username";
+//    private static final String mEmail = "email";
+//    private static final String mPassword = "password";
 
 
     @SuppressLint({"WrongViewCast", "CutPasteId"})
@@ -59,7 +59,7 @@ public class SignupActivity extends AppCompatActivity{
         mCheckBoxAgree         = findViewById(R.id.checkBoxAgree);
 
 
-        if(mAuth != null){
+        if(mAuth.getCurrentUser() != null){
             Intent intent = new Intent(SignupActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -101,39 +101,50 @@ public class SignupActivity extends AppCompatActivity{
                 String confirm_password = mTextConfirmPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(username)){
+                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mLoading.setVisibility(View.GONE);
                     mTextUsername.setError(getText(R.string.username_error));
-                    return;
                 }
                 else if(TextUtils.isEmpty(email)){
-                    mTextUsername.setError(getText(R.string.email_error));
-                    return;
+                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mLoading.setVisibility(View.GONE);
+                    mTextEmail.setError(getText(R.string.email_error));
                 }
                 else if(password.length() < 8){
-                    mTextUsername.setError(getText(R.string.password_error));
-                    return;
+                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mLoading.setVisibility(View.GONE);
+                    mTextPassword.setError(getText(R.string.password_error));
                 }
-                else if(TextUtils.isEmpty(confirm_password)){
-                    mTextUsername.setError(getText(R.string.confirm_password_error));
-                    return;
+                else if(!confirm_password.equals(password)){
+                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mLoading.setVisibility(View.GONE);
+                    mTextConfirmPassword.setError(getText(R.string.confirm_password_error));
                 }
                 else{
                     if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @SuppressLint("ShowToast")
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
                                     Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                                     startActivity(i);
+                                    finish();
+                                    mSignupBtn.setVisibility(View.VISIBLE);
+                                    mLoading.setVisibility(View.GONE);
                                 }
                                 else{
+                                    mSignupBtn.setVisibility(View.VISIBLE);
+                                    mLoading.setVisibility(View.GONE);
                                     Toast.makeText(getApplicationContext(),"Error: " + task.getException().getMessage(), Toast.LENGTH_LONG);
                                 }
                             }
                         });
                     }
                   else{
+                        mSignupBtn.setVisibility(View.VISIBLE);
+                        mLoading.setVisibility(View.GONE);
                         mTextUsername.setError(getText(R.string.email_error));
-                        return;
                     }
 
                 }

@@ -12,19 +12,21 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
 
 public class MainActivity extends Activity {
-    CardView takephoto,upload;
-    ImageView viewImage;
+    CardView mTakephoto,mUpload;
+   // ImageView viewImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        takephoto = findViewById(R.id.take_photo);
-        takephoto.setOnClickListener(new OnClickListener() {
+
+        mTakephoto  = findViewById(R.id.take_photo);
+        mUpload     = findViewById(R.id.upload_photo);
+
+        mTakephoto.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
                 Intent i=new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -32,8 +34,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        upload = findViewById(R.id.upload_photo);
-        upload.setOnClickListener(new OnClickListener() {
+
+        mUpload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
