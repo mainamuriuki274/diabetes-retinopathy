@@ -85,12 +85,14 @@ public class LoginActivity extends AppCompatActivity {
                                     Intent i = new Intent(LoginActivity.this, LoginActivity.class);
                                     startActivity(i);
                                     finish();
+                                    mTextEmail.setText("");
+                                    mTextPassword.setText("");
                                     mSigninBtn.setVisibility(View.VISIBLE);
                                     mLoading.setVisibility(View.GONE);
                                 } else {
                                     mSigninBtn.setVisibility(View.VISIBLE);
                                     mLoading.setVisibility(View.GONE);
-                                    Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG);
+                                    Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();;
                                 }
                             }
                         });
