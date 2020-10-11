@@ -53,13 +53,13 @@ public class MainActivity extends Activity {
 
         userId = mAuth.getCurrentUser().getUid();
 
-        final DocumentReference documentReference = fstore.collection("users").document(userId);
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                mName.setText(value.getString("username"));
-            }
-        });
+//        final DocumentReference documentReference = fstore.collection("users").document(userId);
+//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                mName.setText(value.getString("username"));
+//            }
+//        });
 
 
         mTakephoto.setOnClickListener(new OnClickListener() {

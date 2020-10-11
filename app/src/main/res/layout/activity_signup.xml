@@ -42,7 +42,7 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/text_sign_up"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/Secondary"
                 android:textSize="40sp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/username"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/Secondary" />
 
             <EditText
                 android:id="@+id/username_signup"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/text_email"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/Secondary" />
 
             <EditText
                 android:id="@+id/email_signup"
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/text_password"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/Secondary" />
 
             <EditText
                 android:id="@+id/password_signup"
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/text_confirm_password"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/Secondary" />
 
             <EditText
                 android:id="@+id/confirm_password_signup"
@@ -128,15 +128,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:text="@string/i_agree"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/Secondary" />
 
                 <TextView
                     android:id="@+id/terms"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingLeft="5dp"
                     android:text="@string/terms_and_conditions"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/Secondary"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -175,7 +176,7 @@
                     android:paddingRight="5dp"
                     android:selectAllOnFocus="false"
                     android:text="@string/already_have_account"
-                    android:textColor="@color/colorPrimary" />
+                    android:textColor="@color/Secondary" />
 
                 <TextView
                     android:id="@+id/signin_link"
@@ -186,7 +187,7 @@
                     android:linksClickable="false"
                     android:selectAllOnFocus="false"
                     android:text="@string/text_sign_in"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/Secondary"
                     android:textStyle="bold" />
             </LinearLayout>
 

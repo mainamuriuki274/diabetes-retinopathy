@@ -19,34 +19,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="0dp"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="250dp"
                 android:layout_marginRight="0dp"
-                android:src="@drawable/eye"
+                android:contentDescription="@string/app_logo"
                 android:gravity="center"
-                android:contentDescription="@string/app_logo" />
+                android:src="@drawable/eye" />
 
             <TextView
                 android:id="@+id/appname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
+                android:gravity="center"
                 android:text="@string/appname"
                 android:textAlignment="center"
                 android:textColor="@color/Secondary"
                 android:textSize="80sp"
-                android:gravity="center"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/slogan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:fontFamily="cursive"
-            android:paddingBottom="10dp"
-            android:text="@string/slogan"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="25sp" />
+    <TextView
+        android:id="@+id/slogan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="cursive"
+        android:paddingBottom="10dp"
+        android:text="@string/slogan"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="25sp" />
     </RelativeLayout>

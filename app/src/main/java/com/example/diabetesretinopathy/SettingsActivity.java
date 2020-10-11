@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
     Spinner mSpinner;
-    CardView mNotification,mNotificationBtn,mHelpBtn,mHelp,mAbout,mAboutBtn;
+    CardView mNotification,mNotificationBtn,mHelpBtn,mHelp,mAbout,mAboutBtn,mAccount;
     ImageView mNotificationImage,mHelpImage,mAboutImage;
     Switch mNotificationSwitch;
     LinearLayout mLastReminder,mNextReminder;
@@ -34,12 +35,13 @@ public class SettingsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         mSpinner            = findViewById(R.id.timeline);
+        mAccount            = findViewById(R.id.account);
         mHelp               = findViewById(R.id.help_settings);
         mHelpBtn            = findViewById(R.id.help_card);
         mHelpImage          = findViewById(R.id.imageViewHelp);
-        mAbout               = findViewById(R.id.about_settings);
-        mAboutBtn            = findViewById(R.id.about_card);
-        mAboutImage          = findViewById(R.id.imageViewAbout);
+        mAbout              = findViewById(R.id.about_settings);
+        mAboutBtn           = findViewById(R.id.about_card);
+        mAboutImage         = findViewById(R.id.imageViewAbout);
         mNotification       = findViewById(R.id.notification_settings);
         mNotificationBtn    = findViewById(R.id.notification_card);
         mNotificationImage  = findViewById(R.id.imageViewNotification);
@@ -48,13 +50,25 @@ public class SettingsActivity extends AppCompatActivity {
         mNextReminder       = findViewById(R.id.NextReminder);
         mTextNotification   = findViewById(R.id.text_notification);
 
-
+        mTextNotification.setVisibility(View.GONE);
+        mSpinner.setVisibility(View.GONE);
+        mNextReminder.setVisibility(View.GONE);
+        mLastReminder.setVisibility(View.GONE);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.planets_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
 
+
+        mAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, Account.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mNotificationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
