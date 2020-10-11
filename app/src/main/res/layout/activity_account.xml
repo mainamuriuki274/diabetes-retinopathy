@@ -9,7 +9,7 @@
     android:paddingLeft="20dp"
     android:paddingTop="20dp"
     android:paddingRight="20dp"
-    tools:context=".Account">
+    tools:context=".AccountActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
