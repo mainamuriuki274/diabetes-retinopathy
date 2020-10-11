@@ -38,4 +38,13 @@
     <string name="password_error">Password has to be at least 8 characters long</string>
     <string name="confirm_password_error">Passwords do not match</string>
     <string name="empty_password_error">Password cannot be null</string>
+    <string name="hello">Hello&#032;</string>
+    <string name="name">there</string>
+    <string name="text_settings">Settings</string>
+    <string name="planet_prompt">Choose a planet</string>
+    <string-array name="planets_array">
+        <item>1 month</item>
+        <item>2 months</item>
+        <item>3 months</item>
+    </string-array>
 </resources>

@@ -12,19 +12,55 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import org.w3c.dom.Document;
+
 public class MainActivity extends Activity {
-    CardView mTakephoto,mUpload;
+    CardView mTakephoto,mUpload,mSettings;
+    private FirebaseAuth mAuth;
+    FirebaseFirestore fstore;
+    TextView mName;
+    String userId;
    // ImageView viewImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth       = FirebaseAuth.getInstance();
+        fstore      = FirebaseFirestore.getInstance();
         mTakephoto  = findViewById(R.id.take_photo);
         mUpload     = findViewById(R.id.upload_photo);
+        mSettings   = findViewById(R.id.settings);
+        mName       = findViewById(R.id.hello_there);
+
+        if(mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        userId = mAuth.getCurrentUser().getUid();
+
+        final DocumentReference documentReference = fstore.collection("users").document(userId);
+        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                mName.setText(value.getString("username"));
+            }
+        });
+
 
         mTakephoto.setOnClickListener(new OnClickListener() {
 
@@ -34,6 +70,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        mSettings.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(i);
+            }
+        });
 
         mUpload.setOnClickListener(new OnClickListener() {
             @Override

@@ -137,42 +137,46 @@ public class SignupActivity extends AppCompatActivity{
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
-                                    String userid = mAuth.getCurrentUser().getUid();
-                                    Map<String, Object> user = new HashMap<>();
-                                    user.put(mUserId, userid);
-                                    user.put(mUsername,username);
-                                    user.put(mEmail, email);
+                                    mAuth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            String userid = mAuth.getCurrentUser().getUid();
+                                            Map<String, Object> user = new HashMap<>();
+                                            user.put(mUserId, userid);
+                                            user.put(mUsername,username);
+                                            user.put(mEmail, email);
 
-                                    db.collection("users")
-                                            .add(user)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            db.collection("users")
+                                                    .add(user)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
 
 
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                    Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                                                    startActivity(i);
-                                                    finish();
-                                                    mTextUsername.setText("");
-                                                    mTextEmail.setText("");
-                                                    mTextPassword.setText("");
-                                                    mTextConfirmPassword.setText("");
-                                                    mCheckBoxAgree.setChecked(false);
-                                                    mSignupBtn.setVisibility(View.VISIBLE);
-                                                    mLoading.setVisibility(View.GONE);
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error adding document", e);
-                                                    mSignupBtn.setVisibility(View.VISIBLE);
-                                                    mLoading.setVisibility(View.GONE);
-                                                    Toast.makeText(getApplicationContext(),"Error creating user" , Toast.LENGTH_LONG).show();;
-                                                }
-                                            });
-
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                                            mTextUsername.setText("");
+                                                            mTextEmail.setText("");
+                                                            mTextPassword.setText("");
+                                                            mTextConfirmPassword.setText("");
+                                                            mCheckBoxAgree.setChecked(false);
+                                                            Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                            mSignupBtn.setVisibility(View.VISIBLE);
+                                                            mLoading.setVisibility(View.GONE);
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w(TAG, "Error adding document", e);
+                                                            mSignupBtn.setVisibility(View.VISIBLE);
+                                                            mLoading.setVisibility(View.GONE);
+                                                            Toast.makeText(getApplicationContext(),"Error creating user" , Toast.LENGTH_LONG).show();;
+                                                        }
+                                                    });
+                                        }
+                                    });
 
                                 }
                                 else{

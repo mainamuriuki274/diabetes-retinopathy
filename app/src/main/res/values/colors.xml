@@ -5,4 +5,5 @@
     <color name="colorPrimaryLighter">#FFEAE9E3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="Secondary">#fec12f</color>
+    <color name="gray">#d3d3d3</color>
 </resources>
