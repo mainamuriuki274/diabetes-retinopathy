@@ -46,11 +46,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         mNewPassword         = findViewById(R.id.new_password);
         mConfirmPassword     = findViewById(R.id.confirm_new_password);
         mLoading             = findViewById(R.id.loading_bar);
-        password             = mOldPassword.getText().toString().trim();
-        new_password         = mNewPassword.getText().toString().trim();
-        confirm_password     = mConfirmPassword.getText().toString().trim();
-
-
 
         Glide.with(getApplicationContext())
                 .asGif()
@@ -60,6 +55,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         mChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mChangePassword.setVisibility(View.GONE);
+                mLoading.setVisibility(View.VISIBLE);
+                password             = mOldPassword.getText().toString().trim();
+                new_password         = mNewPassword.getText().toString().trim();
+                confirm_password     = mConfirmPassword.getText().toString().trim();
                 if(password.length() < 8){
                     mChangePassword.setVisibility(View.VISIBLE);
                     mLoading.setVisibility(View.GONE);
@@ -70,7 +70,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     mLoading.setVisibility(View.GONE);
                     mNewPassword.setError(getText(R.string.password_error));
                 }
-                else if(!confirm_password.equals(password)){
+                else if(!confirm_password.equals(new_password)){
                     mChangePassword.setVisibility(View.VISIBLE);
                     mLoading.setVisibility(View.GONE);
                     mConfirmPassword.setError(getText(R.string.confirm_password_error));

@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,9 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -23,7 +27,11 @@ public class SettingsActivity extends AppCompatActivity {
     ImageView mNotificationImage,mHelpImage,mAboutImage;
     Switch mNotificationSwitch;
     LinearLayout mLastReminder,mNextReminder;
-    TextView mTextNotification;
+    TextView mTextNotification,mUserName,mUserEmail;
+    SharedPreferences sharedPreferences;
+    public static final String MyPREFERENCES = "user" ;
+    public static final String Name = "nameKey";
+    public static final String Email = "emailKey";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +53,21 @@ public class SettingsActivity extends AppCompatActivity {
         mLastReminder       = findViewById(R.id.LastReminder);
         mNextReminder       = findViewById(R.id.NextReminder);
         mTextNotification   = findViewById(R.id.text_notification);
+        mUserName           = findViewById(R.id.user_name);
+        mUserEmail          = findViewById(R.id.user_email);
 
         mTextNotification.setVisibility(View.GONE);
         mSpinner.setVisibility(View.GONE);
         mNextReminder.setVisibility(View.GONE);
         mLastReminder.setVisibility(View.GONE);
+
+        sharedPreferences   = this.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String username     = sharedPreferences.getString(Name, "");
+        String email     = sharedPreferences.getString(Email, "");
+        if(username != null && email != null){
+            mUserName.setText(username);
+            mUserEmail.setText(email);
+        }
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.planets_array, android.R.layout.simple_spinner_item);
