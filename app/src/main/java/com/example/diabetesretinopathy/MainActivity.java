@@ -2,7 +2,9 @@ package com.example.diabetesretinopathy;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -30,20 +33,24 @@ public class MainActivity extends Activity {
     CardView mTakephoto,mUpload,mSettings;
     private FirebaseAuth mAuth;
     FirebaseFirestore fstore;
+    SharedPreferences sharedPreferences;
     TextView mName;
     String userId;
+    String username;
    // ImageView viewImage;
+    public static final String MyPREFERENCES = "user" ;
+    public static final String Name = "nameKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth       = FirebaseAuth.getInstance();
-        fstore      = FirebaseFirestore.getInstance();
-        mTakephoto  = findViewById(R.id.take_photo);
-        mUpload     = findViewById(R.id.upload_photo);
-        mSettings   = findViewById(R.id.settings);
-        mName       = findViewById(R.id.hello_there);
+        mAuth             = FirebaseAuth.getInstance();
+        fstore            = FirebaseFirestore.getInstance();
+        mTakephoto        = findViewById(R.id.take_photo);
+        mUpload           = findViewById(R.id.upload_photo);
+        mSettings         = findViewById(R.id.settings);
+        mName             = findViewById(R.id.hello_there);
 
         if(mAuth.getCurrentUser() == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -51,16 +58,12 @@ public class MainActivity extends Activity {
             finish();
         }
 
-        userId = mAuth.getCurrentUser().getUid();
-
-//        final DocumentReference documentReference = fstore.collection("users").document(userId);
-//        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-//                mName.setText(value.getString("username"));
-//            }
-//        });
-
+        userId              = mAuth.getCurrentUser().getUid();
+        sharedPreferences   = this.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String username     = sharedPreferences.getString(Name, "");
+        if(username != null){
+            mName.setText(username);
+        }
 
         mTakephoto.setOnClickListener(new OnClickListener() {
 

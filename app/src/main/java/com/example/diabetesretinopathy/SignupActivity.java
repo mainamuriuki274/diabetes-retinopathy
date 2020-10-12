@@ -146,14 +146,9 @@ public class SignupActivity extends AppCompatActivity{
                                             user.put(mUsername,username);
                                             user.put(mEmail, email);
 
-                                            db.collection("users")
-                                                    .add(user)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-
-
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                            db.collection("users").document(userid).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
                                                             mTextUsername.setText("");
                                                             mTextEmail.setText("");
                                                             mTextPassword.setText("");
