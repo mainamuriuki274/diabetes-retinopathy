@@ -1,16 +1,14 @@
 package com.example.diabetesretinopathy;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,8 +22,6 @@ public class AccountActivity extends AppCompatActivity {
 CardView mChangePassword,mUserCard,mUserIcon;
 ImageView mLoading;
 EditText mUserName,mUserEmail;
-private FirebaseAuth mAuth;
-FirebaseFirestore fstore;
 String userId;
 
     @Override
@@ -33,14 +29,14 @@ String userId;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        mChangePassword      = findViewById(R.id.change_password_card);
-        mLoading             = findViewById(R.id.loading_bar);
-        mUserCard            = findViewById(R.id.user_card);
-        mUserIcon            = findViewById(R.id.user_icon);
-        mUserName            = findViewById(R.id.user_name);
-        mUserEmail           = findViewById(R.id.user_email);
-        mAuth                = FirebaseAuth.getInstance();
-        fstore               = FirebaseFirestore.getInstance();
+        mChangePassword          = findViewById(R.id.change_password_card);
+        mLoading                 = findViewById(R.id.loading_bar);
+        mUserCard                = findViewById(R.id.user_card);
+        mUserIcon                = findViewById(R.id.user_icon);
+        mUserName                = findViewById(R.id.user_name);
+        mUserEmail               = findViewById(R.id.user_email);
+        FirebaseAuth mAuth       = FirebaseAuth.getInstance();
+        FirebaseFirestore fstore = FirebaseFirestore.getInstance();
 
 
         Glide.with(getApplicationContext())
