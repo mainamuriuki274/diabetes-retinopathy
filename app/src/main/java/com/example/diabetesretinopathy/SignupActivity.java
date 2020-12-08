@@ -191,6 +191,13 @@ public class SignupActivity extends AppCompatActivity{
                 }
             }
         });
+        mSignin.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
     }
     private void terms(){
         Intent i = new Intent(SignupActivity.this, LoginActivity.class);

@@ -18,7 +18,7 @@ public class TurnOnCameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_turn_on_camera);
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-            Intent intent = new Intent(TurnOnCameraActivity.this, ViewPhotoActivity.class);
+            Intent intent = new Intent(TurnOnCameraActivity.this, TakePhotoActivity.class);
             startActivity(intent);
             finish();
         }

@@ -1,5 +1,6 @@
 package com.example.diabetesretinopathy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -18,6 +19,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,7 +32,7 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
     Spinner mSpinner;
-    CardView mNotification,mNotificationBtn,mHelpBtn,mHelp,mAbout,mAboutBtn,mAccount;
+    CardView mNotification,mNotificationBtn,mHelpBtn,mHelp,mAbout,mAboutBtn,mAccount,mLogoutBtn;
     ImageView mNotificationImage,mHelpImage,mAboutImage;
     Switch mNotificationSwitch;
     LinearLayout mLastReminder,mNextReminder;
@@ -57,6 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAboutImage         = findViewById(R.id.imageViewAbout);
         mNotification       = findViewById(R.id.notification_settings);
         mNotificationBtn    = findViewById(R.id.notification_card);
+        mLogoutBtn          = findViewById(R.id.logout);
         mNotificationImage  = findViewById(R.id.imageViewNotification);
         mNotificationSwitch = findViewById(R.id.notification_switch);
         mLast_Reminder      = findViewById(R.id.last_reminder);
@@ -192,6 +196,18 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sharedPreferences.edit().clear().commit()) {
+                    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                    fAuth.signOut();
+                    Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        });
         mHelpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
