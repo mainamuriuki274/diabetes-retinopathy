@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,19 +21,27 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class UploadPhotoActivity extends AppCompatActivity {
-    ImageView mImage;
+    ImageView mImage,imageView;
     Button mReUploadImage;
     ListView listView;
     TextView mNothing;
     private static final int GALLERY_PERMISSION_REQUEST_CODE = 2000;
     private static final int GALLERY_REQUEST_CODE = 20001;
     private ImageClassifier imageClassifier;
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +71,18 @@ public class UploadPhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // if this is the result of our camera image request
+        Bitmap photo = null;
+        try {
+            photo = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (resultCode == RESULT_OK && data.getData()!=null) {
             // getting bitmap of the image
-            Bitmap photo = null;
-            try {
-                photo = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             // displaying this bitmap in imageview
             mNothing.setVisibility(View.GONE);
             mImage.setImageBitmap(photo);
-
+            savetoCloud(photo);
             // pass this bitmap to classifier to make prediction
             List<ImageClassifier.Recognition> predicitons = imageClassifier.recognizeImage(
                     photo, 0);
@@ -163,5 +172,42 @@ public class UploadPhotoActivity extends AppCompatActivity {
         } else {
             requestPermission();
         }
+    }
+    private void savetoCloud(Bitmap bitmap){
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        // Create a storage reference from our app
+
+
+// Create a reference to "mountains.jpg"
+        StorageReference mountainsRef = mStorageRef.child("mountains.jpg");
+
+// Create a reference to 'images/mountains.jpg'
+        StorageReference mountainImagesRef = mStorageRef.child("images/mountains.jpg");
+
+// While the file names are the same, the references point to different files
+        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
+        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+
+        // Get the data from an ImageView as bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(getApplicationContext(),"Failed uploaded image",Toast.LENGTH_LONG).show();
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Toast.makeText(getApplicationContext(),"Successfully uploaded image",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
