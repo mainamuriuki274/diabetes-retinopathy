@@ -624,7 +624,7 @@
                 android:layout_height="wrap_content"
                 android:text="odin"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/Secondary"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
