@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends Activity {
-    CardView mTakephoto,mUpload,mSettings;
+    CardView mTakephoto,mUpload,mSettings,mHistory;
     private FirebaseAuth mAuth;
     FirebaseFirestore fstore;
     SharedPreferences sharedPreferences;
@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
         fstore            = FirebaseFirestore.getInstance();
         mTakephoto        = findViewById(R.id.take_photo);
         mUpload           = findViewById(R.id.upload_photo);
+        mHistory          = findViewById(R.id.history);
         mSettings         = findViewById(R.id.settings);
         mName             = findViewById(R.id.hello_there);
 
@@ -71,6 +72,14 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        mHistory.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
