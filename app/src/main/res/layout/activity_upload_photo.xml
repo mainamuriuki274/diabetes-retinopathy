@@ -44,8 +44,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:foregroundGravity="clip_horizontal"
@@ -80,7 +80,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:background="@drawable/more_rounded_button"
-        android:text="Upload A Different Image"
+        android:text="Upload Image"
         android:textColor="@color/colorPrimaryLight" />
-
+    <Button
+        android:id="@+id/compare_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/another_rounded_button"
+        android:text="Compare With Previous Image"
+        android:textColor="@color/colorPrimary" />
 </LinearLayout>

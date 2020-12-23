@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,25 +24,40 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class UploadPhotoActivity extends AppCompatActivity {
     ImageView mImage,imageView;
-    Button mReUploadImage;
+    Button mReUploadImage,mCompareImage;
     ListView listView;
     TextView mNothing;
     private static final int GALLERY_PERMISSION_REQUEST_CODE = 2000;
     private static final int GALLERY_REQUEST_CODE = 20001;
     private ImageClassifier imageClassifier;
     private StorageReference mStorageRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +68,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
         mNothing   = findViewById(R.id.nothing);
         listView = findViewById(R.id.lv_probabilities);
         mReUploadImage = findViewById(R.id.reupload_image);
+        mCompareImage = findViewById(R.id.compare_image);
         try {
             imageClassifier = new ImageClassifier(this);
         } catch (IOException e) {
@@ -64,7 +81,24 @@ public class UploadPhotoActivity extends AppCompatActivity {
                 openGallery();
             }
         });
+        mCompareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                Query lastQuery = databaseReference.child("mp").orderByKey().limitToLast(1);
+                lastQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String message = dataSnapshot.child("message").getValue().toString();
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle possible errors.
+                    }
+                });
+            }
+        });
 
 
     }
@@ -81,8 +115,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
             // getting bitmap of the image
             // displaying this bitmap in imageview
             mNothing.setVisibility(View.GONE);
-            mImage.setImageBitmap(photo);
-            savetoCloud(photo);
+
             // pass this bitmap to classifier to make prediction
             List<ImageClassifier.Recognition> predicitons = imageClassifier.recognizeImage(
                     photo, 0);
@@ -90,9 +123,11 @@ public class UploadPhotoActivity extends AppCompatActivity {
             // creating a list of string to display in list view
             final List<String> predicitonsList = new ArrayList<>();
             for (ImageClassifier.Recognition recog : predicitons) {
-                predicitonsList.add(recog.getName() + "  ::::::::::  " + recog.getConfidence()*100);
+                predicitonsList.add(recog.getName() + ": " + recog.getConfidence());
             }
-
+            String prediction_value = predicitonsList.get(0);
+            savetoCloud(photo,prediction_value,predicitonsList);
+            mImage.setImageBitmap(photo);
             // creating an array adapter to display the classification result in list view
             ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(
                     this, R.layout.support_simple_spinner_dropdown_item, predicitonsList);
@@ -173,27 +208,32 @@ public class UploadPhotoActivity extends AppCompatActivity {
             requestPermission();
         }
     }
-    private void savetoCloud(Bitmap bitmap){
+    private void savetoCloud(Bitmap bitmap, final String prediction_value, final List<String> predicitonsList){
         mStorageRef = FirebaseStorage.getInstance().getReference();
         // Create a storage reference from our app
-
-
+        mAuth = FirebaseAuth.getInstance();
+        Date currentTime = Calendar.getInstance().getTime();
+        final String userId = mAuth.getCurrentUser().getUid();
+        //String image_id = UUID.randomUUID().toString();
+        final String model_id = "1";
+        final String date_of_scan = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        final String image = userId + currentTime;
 // Create a reference to "mountains.jpg"
-        StorageReference mountainsRef = mStorageRef.child("mountains.jpg");
+        final StorageReference storageRef = mStorageRef.child("images/"+image+".jpg");
 
 // Create a reference to 'images/mountains.jpg'
-        StorageReference mountainImagesRef = mStorageRef.child("images/mountains.jpg");
+        StorageReference mountainImagesRef = mStorageRef.child("images/"+image+".jpg");
 
 // While the file names are the same, the references point to different files
-        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+        storageRef.getName().equals(mountainImagesRef.getName());    // true
+        storageRef.getPath().equals(mountainImagesRef.getPath());    // false
 
         // Get the data from an ImageView as bytes
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = mountainsRef.putBytes(data);
+        UploadTask uploadTask = storageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -203,9 +243,35 @@ public class UploadPhotoActivity extends AppCompatActivity {
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
+                StorageReference imageRef = mStorageRef.child("images/"+image+".jpg");
+                //Toast.makeText(getApplicationContext(),imageRef.toString(),Toast.LENGTH_LONG).show();
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
+                    @Override
+                    public void onSuccess(Uri downloadUrl)
+                    {
+                        //Toast.makeText(getApplicationContext(),downloadUrl.toString(),Toast.LENGTH_LONG).show();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference("/images/"+userId);
+                        myRef.child("/" + image).setValue(image);
+                        myRef.child("/" + image+ "/date_of_scan").setValue(date_of_scan);
+                        myRef.child("/" + image+ "/image").setValue(downloadUrl.toString());
+                        myRef.child("/" + image+ "/image_id").setValue(image);
+                        myRef.child("/" + image+ "/model_id").setValue(model_id);
+                        myRef.child("/" + image+ "/prediction").setValue(predicitonsList.toString());
+                        myRef.child("/" + image+ "/prediction_value").setValue(prediction_value);
+                        myRef.child("/" + image+ "/user_id").setValue(userId);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(),"An error occured!",Toast.LENGTH_LONG).show();
+                    }
+                });
                 Toast.makeText(getApplicationContext(),"Successfully uploaded image",Toast.LENGTH_LONG).show();
             }
         });

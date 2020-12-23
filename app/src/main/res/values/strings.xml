@@ -44,6 +44,7 @@
     <string name="planet_prompt">Choose a planet</string>
     <string name="text_history">History</string>
     <string name="track">Track previous scans</string>
+    <string name="text_compare">Compare Images</string>
     <string-array name="planets_array">
         <item>1 month</item>
         <item>2 months</item>

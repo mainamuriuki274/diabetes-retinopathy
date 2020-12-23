@@ -6,7 +6,13 @@
     android:layout_height="wrap_content"
     android:paddingRight="5dp"
     android:paddingLeft="5dp"
-    >
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:elevation="20dp"
+    android:thicknessRatio="1.9"
+    app:cardCornerRadius="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,9 +20,10 @@
         android:orientation="horizontal">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
             android:innerRadius="0dp"
             android:shape="ring"
             android:thicknessRatio="1.9"
@@ -24,9 +31,10 @@
 
             <ImageView
                 android:id="@+id/scanned_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
+                android:scaleType="fitXY"
                 tools:srcCompat="@tools:sample/avatars" />
         </androidx.cardview.widget.CardView>
 
@@ -48,20 +56,15 @@
                 android:id="@+id/prediction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Prediciton: No Diabetes Retinopathy" />
+                android:text="Prediciton: No Diabetes Retinopathy"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/pred_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="39%"
-                android:visibility="gone" />
-
-            <ListView
-                android:id="@+id/predictions_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                />
         </LinearLayout>
     </LinearLayout>
 

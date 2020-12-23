@@ -62,8 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         mTextEmail        = findViewById(R.id.email_signin);
         mTextPassword     = findViewById(R.id.password_signin);
         sharedpreferences = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-
-        if(mAuth.getCurrentUser() != null){
+        String username     = sharedpreferences.getString(Name, "");
+        if(mAuth.getCurrentUser() != null && username != null){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -113,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     editor.putString(Name,document.getString("username"));
                                                     editor.putString(Email,document.getString("email"));
                                                     if(editor.commit()){
-                                                        Intent i = new Intent(LoginActivity.this, LoginActivity.class);
+                                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                                         startActivity(i);
                                                         finish();
                                                         mTextEmail.setText("");

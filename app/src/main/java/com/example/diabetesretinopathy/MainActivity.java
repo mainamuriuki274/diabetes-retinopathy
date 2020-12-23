@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
@@ -35,17 +36,21 @@ public class MainActivity extends Activity {
         mSettings         = findViewById(R.id.settings);
         mName             = findViewById(R.id.hello_there);
 
-        if(mAuth.getCurrentUser() == null){
+        userId              = mAuth.getCurrentUser().getUid();
+        sharedPreferences   = this.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String username     = sharedPreferences.getString(Name, "");
+
+        if(mAuth.getCurrentUser() == null && username == null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
 
-        userId              = mAuth.getCurrentUser().getUid();
-        sharedPreferences   = this.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        String username     = sharedPreferences.getString(Name, "");
         if(username != null){
             mName.setText(username);
+        }
+        else{
+            Toast.makeText(getApplicationContext(),username,Toast.LENGTH_LONG).show();
         }
 
 

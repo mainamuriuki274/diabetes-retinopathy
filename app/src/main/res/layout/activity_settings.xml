@@ -615,7 +615,8 @@
             <ImageView
                 android:id="@+id/imageView16"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="80dp"
+                android:paddingTop="20dp"
                 app:srcCompat="@drawable/eye" />
 
             <TextView

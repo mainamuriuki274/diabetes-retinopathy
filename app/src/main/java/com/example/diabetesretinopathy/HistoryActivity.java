@@ -14,6 +14,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +29,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,6 +46,7 @@ public class HistoryActivity extends AppCompatActivity {
     FirebaseDatabase mFirebaseDatabase;
     DatabaseReference mRef;
     ImageView mLoading;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +57,8 @@ public class HistoryActivity extends AppCompatActivity {
                 .asGif()
                 .load(R.drawable.loading)
                 .into(mLoading);
-
+        mAuth = FirebaseAuth.getInstance();
+        final String userId = mAuth.getCurrentUser().getUid();
         //RecyclerView
         mRecyclerView = findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -76,7 +82,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         //send Query to FirebaseDatabase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRef = mFirebaseDatabase.getReference("images");
+        mRef = mFirebaseDatabase.getReference("/images/"+userId);
     }
     //load data into recycler view onStart
     @Override
@@ -92,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity {
                     @Override
                     protected void populateViewHolder(ViewHolder viewHolder, Model model, int position) {
                         mLoading.setVisibility(View.VISIBLE);
-                        viewHolder.setDetails(getApplicationContext(), model.getDate_of_scan(), model.getPrediction(), model.getImage(),model.getPredicitons_list(),model.getPrediction_value());
+                        viewHolder.setDetails(getApplicationContext(), model.getDate_of_scan(), model.getPrediction(), model.getImage(),model.getPrediction_value());
                         mLoading.setVisibility(View.GONE);
                     }
 
@@ -109,33 +115,24 @@ public class HistoryActivity extends AppCompatActivity {
                                 TextView mPrediction = view.findViewById(R.id.prediction);
                                 ImageView mScannedImage = view.findViewById(R.id.scanned_image);
                                 TextView mPredictionValue = view.findViewById(R.id.pred_value);
-                                ListView mPredList = view.findViewById(R.id.predictions_list);
                                 //get data from views
                                 String mScan_Date = mScanDate.getText().toString();
-                                String predicitons_list = mPredList.getAdapter().toString();
                                 String mPred_Value = mPredictionValue.getText().toString();
                                 String mPred = mPrediction.getText().toString();
                                 Drawable mDrawable = mScannedImage.getDrawable();
                                 Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                                String value;
-                                ArrayList<String> predictions = new ArrayList<String>();
-                                for (int i = 0; i < mPredList.getCount(); i++) {
-                                    value = mPredList.getChildAt(i).toString();
-                                    Toast.makeText(getApplicationContext(),value,Toast.LENGTH_LONG).show();
-                                    //predictions.add(value);
-                                }
 
-                                //pass this data to new activity
-                                Intent intent = new Intent(view.getContext(), HistoryDetailsActivity.class);
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                byte[] bytes = stream.toByteArray();
-                                intent.putExtra("image", bytes); //put bitmap image as array of bytes
-                                intent.putExtra("prediction", mPred); // put title
-                                intent.putExtra("scan_date", mScan_Date);
-                                intent.putExtra("prediction_value", mPred_Value); //put description
-                                intent.putExtra("predicitons_list", predicitons_list); //put description
-                                startActivity(intent); //start activity
+
+                                    //pass this data to new activity
+                                    Intent intent = new Intent(view.getContext(), HistoryDetailsActivity.class);
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] bytes = stream.toByteArray();
+                                    intent.putExtra("image", bytes); //put bitmap image as array of bytes
+                                    intent.putExtra("prediction", mPred); // put title
+                                    intent.putExtra("scan_date", mScan_Date);
+                                    intent.putExtra("prediction_value", mPred_Value); //put description//put description
+                                    startActivity(intent); //start activity
 
 
                             }

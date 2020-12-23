@@ -7,20 +7,13 @@ public class Model {
     String image;
     String prediction;
     String prediction_value;
-    List<String> predicitons_list;
 
 
     //constructor
     public Model(){}
 
     //getter and setters press Alt+Insert
-    public List<String> getPredicitons_list() {
-        return predicitons_list;
-    }
 
-    public void setPredicitons_list(List<String> predicitons_list) {
-        this.predicitons_list = predicitons_list;
-    }
 
     public String getDate_of_scan() {
         return date_of_scan;

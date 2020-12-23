@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ViewHolder  extends RecyclerView.ViewHolder {
@@ -41,21 +43,15 @@ public class ViewHolder  extends RecyclerView.ViewHolder {
     }
 
     //set details to recycler view row
-    public void setDetails(Context ctx, String scan_date, String prediction, String scanned_image, List<String> predicitons_list,String pred_value){
+    public void setDetails(Context ctx, String scan_date, String prediction, String scanned_image,String pred_value){
         //Views
         TextView mScanDate = mView.findViewById(R.id.date_of_scan);
         TextView mPrediction = mView.findViewById(R.id.prediction);
         ImageView mScannedImage = mView.findViewById(R.id.scanned_image);
         TextView mPredictionValue = mView.findViewById(R.id.pred_value);
-        ListView mPredList = mView.findViewById(R.id.predictions_list);
         //set data to views
         mScanDate.setText(scan_date);
         mPrediction.setText(prediction);
-
-        // creating an array adapter to display the classification result in list view
-        ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(
-                ctx, R.layout.support_simple_spinner_dropdown_item, predicitons_list);
-        mPredList.setAdapter(predictionsAdapter);
         mPredictionValue.setText(pred_value);
         Glide.with(ctx).load(scanned_image).into(mScannedImage);
     }

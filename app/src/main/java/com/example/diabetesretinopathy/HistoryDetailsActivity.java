@@ -10,7 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,17 +36,20 @@ public class HistoryDetailsActivity extends AppCompatActivity {
 
         //get data from intent
         byte[] bytes = getIntent().getByteArrayExtra("image");
-        String prediction = getIntent().getStringExtra("prediction");
+        String prediction = getIntent().getStringExtra("prediction_value");
         String scan_date = getIntent().getStringExtra("scan_date");
-        //List<String> predicitonsList = getIntent().getStringExtra("predicitons_list");
+        String predicitonsList = getIntent().getStringExtra("prediction");
         Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
         //set data to views
-        mPrediction.setText(prediction);
+        mPrediction.setText(predicitonsList);
         mScanDate.setText(scan_date);
-//        ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(
-//                this, R.layout.support_simple_spinner_dropdown_item, predicitonsList);
-//        mPredictionLists.setAdapter(predictionsAdapter);
+        mPrediction.setText(prediction);
+        String replace = predicitonsList.replace("[","");
+        String replace1 = replace.replace("]","");
+        List<String> predicitons_list = new ArrayList<String>(Arrays.asList(replace1.split(",")));
+        ArrayAdapter<String> predictionsAdapter = new ArrayAdapter<>(
+                this, R.layout.support_simple_spinner_dropdown_item, predicitons_list);
+        mPredictionLists.setAdapter(predictionsAdapter);
         mImageIv.setImageBitmap(bmp);
 
 
