@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         mUpload.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, UploadPhotoActivity.class);
+                Intent intent = new Intent(MainActivity.this, RightEyeUploadActivity.class);
                 startActivity(intent);
             }
         });

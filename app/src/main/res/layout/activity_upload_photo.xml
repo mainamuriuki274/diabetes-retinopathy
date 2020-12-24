@@ -6,88 +6,220 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
     tools:context=".UploadPhotoActivity">
 
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="sans-serif"
-        android:text="View Image"
-        android:textAlignment="center"
-        android:textColor="@color/Secondary"
-        android:textSize="30sp" />
+        android:layout_height="250dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif"
+                android:text="Scan Results"
+                android:textAlignment="center"
+                android:textColor="@color/Secondary"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:srcCompat="@drawable/analysis_vector" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:elevation="15dp"
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
         app:cardCornerRadius="15dp">
 
-        <TextView
-            android:id="@+id/nothing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:text="Nothing to show"
-            android:textAlignment="center"
-            android:textSize="30sp" />
-
-        <ImageView
-            android:id="@+id/imageView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:foregroundGravity="clip_horizontal"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:orientation="horizontal">
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="75dp">
+
+                <ImageView
+                    android:id="@+id/right_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Right Eye" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Analysis Result" />
+
+                <TextView
+                    android:id="@+id/right_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NO DR 39%"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Structural Similarity Index(SSIM)" />
+
+                <TextView
+                    android:id="@+id/right_ssim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0.96"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:elevation="15dp"
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
         app:cardCornerRadius="15dp">
 
-        <ListView
-            android:id="@+id/lv_probabilities"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/bt_take_picture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_capture" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:innerRadius="0dp"
+                android:shape="ring"
+                android:thicknessRatio="1.9"
+                app:cardCornerRadius="75dp">
+
+                <ImageView
+                    android:id="@+id/left_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Right Eye" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Analysis Result" />
+
+                <TextView
+                    android:id="@+id/left_results"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NO DR 39%"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Structural Similarity Index(SSIM)" />
+
+                <TextView
+                    android:id="@+id/left_ssim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0.96"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/reupload_image"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/more_rounded_button"
-        android:text="Upload Image"
-        android:textColor="@color/colorPrimaryLight" />
-    <Button
-        android:id="@+id/compare_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/another_rounded_button"
-        android:text="Compare With Previous Image"
-        android:textColor="@color/colorPrimary" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:paddingTop="20dp"
+            app:srcCompat="@drawable/eye" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="odin"
+            android:textAlignment="center"
+            android:textColor="@color/Secondary"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
 </LinearLayout>

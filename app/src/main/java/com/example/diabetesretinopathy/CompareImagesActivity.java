@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.chaquo.python.android.AndroidPlatform;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,25 +50,31 @@ public class CompareImagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare_images);
         Objects.requireNonNull(getSupportActionBar()).hide();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         mSsimReport = findViewById(R.id.ssim_report);
         mComparison = findViewById(R.id.comparison);
         mLoading = findViewById(R.id.loading_bar);
         mImageCard = findViewById(R.id.image_card);
         mInfoCard = findViewById(R.id.info_card);
         mSsim = findViewById(R.id.ssim);
-        if(!Python.isStarted())
-        {
-            Python.start(new AndroidPlatform(this));
-        }
         Glide.with(getApplicationContext())
                 .asGif()
                 .load(R.drawable.loading)
                 .into(mLoading);
-        byte[] bytesA = getIntent().getByteArrayExtra("imageA");
-        byte[] bytesB = getIntent().getByteArrayExtra("imageB");
+        if(!Python.isStarted())
+        {
+            Python.start(new AndroidPlatform(this));
+        }
+
+
         String last_scan_date = getIntent().getStringExtra("last_scan_date");
-        Bitmap bmpA = BitmapFactory.decodeByteArray(bytesA, 0, bytesA.length);
-        Bitmap bmpB = BitmapFactory.decodeByteArray(bytesB, 0, bytesB.length);
+        String imgA = getIntent().getStringExtra("current_image");
+        String imgB = getIntent().getStringExtra("previous_image");
+
+        Bitmap bmpA = getBitmapImage(imgA);
+        Bitmap bmpB = getBitmapImage(imgB);
 
         String image1 = getStringImage(bmpA);
         String image2 = getStringImage(bmpB);
@@ -81,11 +89,13 @@ public class CompareImagesActivity extends AppCompatActivity {
 
         String str = result.get(0);
         String ssim = result.get(1);
+        String new_ssim = ssim.replace("'","");
+        String last_ssim = new_ssim.replace("'","");
         String ssim_report = null;
         byte[] data = android.util.Base64.decode(str,Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
-
-        int ssim_int = Integer.parseInt(ssim);
+        //Toast.makeText(getApplicationContext(),last_ssim,Toast.LENGTH_LONG).show();
+        float ssim_int = Float.parseFloat(last_ssim);
         if(ssim_int >= 0.96){
             ssim_report = "The Image analysis indicates that the Diabetes Retinopathy has not changed and no new masses have formed since the last scan taken on: " + last_scan_date;
         }
@@ -111,5 +121,16 @@ public class CompareImagesActivity extends AppCompatActivity {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = android.util.Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+    private Bitmap getBitmapImage(String image) {
+        Bitmap bitmap =null;
+        try {
+            URL url = new URL(image);
+            bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            return bitmap;
+        } catch(IOException e) {
+            System.out.println(e);
+        }
+        return bitmap;
     }
 }
