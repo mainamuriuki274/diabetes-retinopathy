@@ -15,29 +15,35 @@
 
         android:background="#FFFFFF"
         android:backgroundTint="@color/colorPrimary" >
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="sans-serif"
-        android:textAlignment="center"
-        android:text="Compare Images"
-        android:textColor="@color/Secondary"
-        android:textSize="30sp" />
-    </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/loading_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:contentDescription="@string/loading"
-        android:drawingCacheQuality="high"
-        android:indeterminateBehavior="repeat"
-        android:visibility="visible" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif"
+                android:text="Compare Images"
+                android:textAlignment="center"
+                android:textColor="@color/Secondary"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/eye"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textAlignment="center"
+                android:textColor="@color/Secondary"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
     <androidx.cardview.widget.CardView
@@ -46,11 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="-150dp"
+        android:layout_marginTop="-130dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:shape="ring"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="15dp">
 
         <androidx.cardview.widget.CardView
@@ -59,97 +65,166 @@
 
             <ImageView
                 android:id="@+id/comparison"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
 
                 tools:srcCompat="@tools:sample/avatars" />
         </androidx.cardview.widget.CardView>
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:id="@+id/info_card"
-        android:layout_width="350dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView10"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Structural Similarity Index (SSIM):"
-            android:textStyle="bold" />
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/ssim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="0.3925" />
+            <LinearLayout
+                android:id="@+id/info_card"
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="?android:attr/listDivider" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="What does SSIM mean?"
-            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textView19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Previous Scan"
+                        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SSIM is a method for measuring the similarity between two images.  " />
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Current Scan"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="?android:attr/listDivider" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="What does my SSIM show?"
-            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/previous_scan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Moderate NPDR: 0.3921569%" />
 
-        <TextView
-            android:id="@+id/ssim_report"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="This shows that the Diabetes Retinopathy has significantly worsened from the last image taken on 12/12/2020" />
+                    <TextView
+                        android:id="@+id/current_scan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Moderate NPDR: 0.3921569%" />
+                </LinearLayout>
 
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="?android:attr/listDivider" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/listDivider" />
 
-        <TextView
-            android:id="@+id/textView24"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="How to read the image?"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Structural Similarity Index (SSIM):"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="The image shows new masses areas in blue marks." />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/ssim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0.3925" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What does the analysis show?"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ssim_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This shows that the Diabetes Retinopathy has significantly worsened from the last image taken on 12/12/2020" />
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What does SSIM mean?"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="SSIM is a method for measuring the similarity between two images.  " />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="?android:attr/listDivider" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:text="DR Stages"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NPDR - Non Proliferative Diabetes Retinopathy" />
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/stages_dr" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

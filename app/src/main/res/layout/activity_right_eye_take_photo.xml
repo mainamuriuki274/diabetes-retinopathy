@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:orientation="vertical"
-    tools:context=".RightEyeUploadActivity">
+    tools:context=".RightEyeTakePhotoActivity">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="sans-serif"
-            android:text="Upload Right Eye Image"
+            android:text="Take Photo of Right Eye "
             android:textAlignment="center"
             android:textColor="@color/Secondary"
             android:textSize="30sp" />
@@ -84,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="Make sure you have uploaded an image of the right eye and that the retina is clearly visible. " />
+            android:text="Make sure you have taken an image of the right eye and that the retina is clearly visible. " />
 
         <View
             android:id="@+id/divider4"
@@ -133,7 +133,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/another_rounded_button"
-            android:text="Upload Image"
+            android:text="Take Photo"
             android:textColor="@color/colorPrimary" />
 
         <Button

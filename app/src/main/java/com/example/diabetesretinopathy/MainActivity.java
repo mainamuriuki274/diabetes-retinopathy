@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
         mTakephoto.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TakePhotoActivity.class);
+                Intent intent = new Intent(MainActivity.this, RightEyeTakePhotoActivity.class);
                 startActivity(intent);
             }
         });

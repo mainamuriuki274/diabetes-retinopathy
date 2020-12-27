@@ -18,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LeftEyeUploadActivity"></activity>
+        <activity android:name=".LeftEyeTakePhotoActivity"></activity>
+        <activity android:name=".RightEyeTakePhotoActivity" />
+        <activity android:name=".LeftEyeTakePhoto" />
+        <activity android:name=".LeftEyeUploadActivity" />
         <activity android:name=".RightEyeUploadActivity" />
         <activity android:name=".CompareImagesActivity" />
         <activity android:name=".HistoryDetailsActivity" />

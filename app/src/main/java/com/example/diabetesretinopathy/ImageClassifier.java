@@ -204,10 +204,7 @@ public class ImageClassifier {
 
         @Override
         public String toString() {
-            return "Recognition{" +
-                    "name='" + name + '\'' +
-                    ", confidence=" + confidence +
-                    '}';
+            return name + "," + confidence*100;
         }
 
         @Override

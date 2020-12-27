@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryLighter"
     android:orientation="vertical"
-    tools:context=".RightEyeUploadActivity">
+    tools:context=".LeftEyeUploadActivity">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -133,7 +133,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/another_rounded_button"
-            android:text="Reupload Image"
+            android:text="Upload Image"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -167,16 +167,29 @@
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/previos_left"
+            android:id="@+id/previous_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/previos_right"
+            android:id="@+id/previous_right"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <TextView
+            android:id="@+id/previous_scan_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/previous_scan_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
 
         <TextView
             android:id="@+id/current_left"
