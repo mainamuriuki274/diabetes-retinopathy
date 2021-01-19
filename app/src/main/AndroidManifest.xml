@@ -10,17 +10,20 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LeftEyeTakePhotoActivity"></activity>
+        <activity android:name=".NoPreviousActivity"></activity>
+        <activity android:name=".AnalyseImagesActivity" />
+        <activity android:name=".LeftEyeTakePhotoActivity" />
         <activity android:name=".RightEyeTakePhotoActivity" />
-        <activity android:name=".LeftEyeTakePhoto" />
         <activity android:name=".LeftEyeUploadActivity" />
         <activity android:name=".RightEyeUploadActivity" />
         <activity android:name=".CompareImagesActivity" />

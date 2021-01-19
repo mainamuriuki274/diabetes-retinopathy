@@ -9,34 +9,53 @@
     android:orientation="vertical"
     tools:context=".HistoryDetailsActivity">
 
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_marginBottom="20dp"
-        android:fontFamily="sans-serif"
-        android:text="View Scanned Image"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textColor="@color/Secondary"
-        android:textSize="30sp" />
+
+        android:background="#FFFFFF"
+        android:backgroundTint="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif"
+                android:text="View Scanned Image"
+                android:textAlignment="center"
+                android:textColor="@color/Secondary"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="-130dp"
         android:elevation="15dp"
         android:innerRadius="0dp"
         android:shape="ring"
         android:thicknessRatio="1.9"
-        app:cardCornerRadius="15dp" >
-    <TextView
-        android:id="@+id/nothing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="sans-serif"
-        android:text="Nothing to show"
-        android:textAlignment="center"
-        android:textSize="30sp" />
+        app:cardCornerRadius="15dp">
+
+        <TextView
+            android:id="@+id/nothing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:text="Nothing to show"
+            android:textAlignment="center"
+            android:textSize="30sp" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -53,6 +72,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -85,27 +106,57 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Prediction:" />
+                        android:text="Prediction:"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/prediction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:text="No DR" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Date of Scan:" />
+                        android:text="Date of Scan:"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/date_of_scan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:text="12/12/2020" />
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/textView29"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Eye:"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView31"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="Right" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -137,8 +188,8 @@
 
                     <ListView
                         android:id="@+id/lv_probabilities"
-                        android:layout_width="350dp"
-                        android:layout_height="250dp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -43,17 +43,27 @@ public class ViewHolder  extends RecyclerView.ViewHolder {
     }
 
     //set details to recycler view row
-    public void setDetails(Context ctx, String scan_date, String prediction, String scanned_image,String pred_value){
+    public void setDetails(Context ctx, String scan_date, String right_prediction, String left_prediction, String right_image, String left_image, String ssim_right,String ssim_left,String previous_date){
         //Views
         TextView mScanDate = mView.findViewById(R.id.date_of_scan);
-        TextView mPrediction = mView.findViewById(R.id.prediction);
-        ImageView mScannedImage = mView.findViewById(R.id.scanned_image);
-        TextView mPredictionValue = mView.findViewById(R.id.pred_value);
+        TextView mScanDate2 = mView.findViewById(R.id.date_of_scan2);
+        TextView mPredictionRight = mView.findViewById(R.id.right_prediction);
+        TextView mPredictionLeft = mView.findViewById(R.id.left_prediction);
+        ImageView mImageRight = mView.findViewById(R.id.right_image);
+        ImageView mImageLeft = mView.findViewById(R.id.left_image);
+        TextView mSsimLeft = mView.findViewById(R.id.comparison_left);
+        TextView mSsimRight = mView.findViewById(R.id.comparison_right);
         //set data to views
+        String left_ssim = ssimReport(ssim_left,previous_date);
+        String right_ssim = ssimReport(ssim_right,previous_date);
         mScanDate.setText(scan_date);
-        mPrediction.setText(prediction);
-        mPredictionValue.setText(pred_value);
-        Glide.with(ctx).load(scanned_image).into(mScannedImage);
+        mScanDate2.setText(scan_date);
+        mSsimLeft.setText(left_ssim);
+        mSsimRight.setText(right_ssim);
+        mPredictionRight.setText(right_prediction);
+        mPredictionLeft.setText(left_prediction);
+        Glide.with(ctx).load(right_image).into(mImageRight);
+        Glide.with(ctx).load(left_image).into(mImageLeft);
     }
 
     private ViewHolder.ClickListener mClickListener;
@@ -66,5 +76,22 @@ public class ViewHolder  extends RecyclerView.ViewHolder {
 
     public void setOnClickListener(ViewHolder.ClickListener clickListener){
         mClickListener = clickListener;
+    }
+    private String ssimReport(String ssim, String previous_date){
+        float ssim_float = Float.parseFloat(ssim);
+        String ssim_report;
+        if(ssim_float >= 0.96){
+            ssim_report = "Diabetes Retinopathy did not change and no new masses formed since the last scan taken on: " + previous_date;
+        }
+        else if(ssim_float >= 0.57 && ssim_float <=0.95){
+            ssim_report = "Diabetes Retinopathy slightly regressed and a few new masses formed since the last scan taken on: " + previous_date;
+        }
+        else if(ssim_float > 0.00 && ssim_float < 0.57){
+            ssim_report = "Diabetes Retinopathy got significantly worse and a number new masses formed since the last scan taken on: " + previous_date;
+        }
+        else{
+            ssim_report = "There are no images to compare with. This is the first image";
+        }
+        return ssim_report;
     }
 }

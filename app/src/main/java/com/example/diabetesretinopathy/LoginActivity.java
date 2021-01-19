@@ -77,19 +77,19 @@ public class LoginActivity extends AppCompatActivity {
         mSigninBtn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                mSigninBtn.setVisibility(View.GONE);
+                mSigninBtn.setEnabled(false);
                 mLoading.setVisibility(View.VISIBLE);
 
                 String email    = mTextEmail.getText().toString().trim();
                 final String password = mTextPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email)){
-                    mSigninBtn.setVisibility(View.VISIBLE);
+                    mSigninBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextEmail.setError(getText(R.string.email_error));
                 }
                 else if(TextUtils.isEmpty(password)){
-                    mSigninBtn.setVisibility(View.VISIBLE);
+                    mSigninBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextPassword.setError(getText(R.string.empty_password_error));
                 }
@@ -118,13 +118,13 @@ public class LoginActivity extends AppCompatActivity {
                                                         finish();
                                                         mTextEmail.setText("");
                                                         mTextPassword.setText("");
-                                                        mSigninBtn.setVisibility(View.VISIBLE);
+                                                        mSigninBtn.setEnabled(true);
                                                         mLoading.setVisibility(View.GONE);
                                                     }
 
                                                 } else {
                                                     Toast.makeText(getApplicationContext(),"No such user",Toast.LENGTH_LONG).show();
-                                                    mSigninBtn.setVisibility(View.VISIBLE);
+                                                    mSigninBtn.setEnabled(true);
                                                     mLoading.setVisibility(View.GONE);
                                                 }
                                             }
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                                     });
 
                                 } else {
-                                    mSigninBtn.setVisibility(View.VISIBLE);
+                                    mSigninBtn.setEnabled(true);
                                     mLoading.setVisibility(View.GONE);
                                     Toast.makeText(getApplicationContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();;
                                 }
@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else{
                             mTextEmail.setError(getText(R.string.email_error));
-                            mSigninBtn.setVisibility(View.VISIBLE);
+                            mSigninBtn.setEnabled(true);
                             mLoading.setVisibility(View.GONE);
                     }
 

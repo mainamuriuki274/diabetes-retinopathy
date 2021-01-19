@@ -98,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity {
                     @Override
                     protected void populateViewHolder(ViewHolder viewHolder, Model model, int position) {
                         mLoading.setVisibility(View.VISIBLE);
-                        viewHolder.setDetails(getApplicationContext(), model.getDate_of_scan(), model.getPrediction(), model.getImage(),model.getPrediction_value());
+                        viewHolder.setDetails(getApplicationContext(), model.getDate_of_scan(), model.getRight_prediction(), model.getLeft_prediction(),model.getImage_right(),model.getImage_left(),model.getRight_ssim(),model.getLeft_ssim(),model.getLast_scan_date());
                         mLoading.setVisibility(View.GONE);
                     }
 
@@ -110,29 +110,34 @@ public class HistoryActivity extends AppCompatActivity {
                         viewHolder.setOnClickListener(new ViewHolder.ClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                //Views
-                                TextView mScanDate = view.findViewById(R.id.date_of_scan);
-                                TextView mPrediction = view.findViewById(R.id.prediction);
-                                ImageView mScannedImage = view.findViewById(R.id.scanned_image);
-                                TextView mPredictionValue = view.findViewById(R.id.pred_value);
-                                //get data from views
-                                String mScan_Date = mScanDate.getText().toString();
-                                String mPred_Value = mPredictionValue.getText().toString();
-                                String mPred = mPrediction.getText().toString();
-                                Drawable mDrawable = mScannedImage.getDrawable();
-                                Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-
-
-                                    //pass this data to new activity
-                                    Intent intent = new Intent(view.getContext(), HistoryDetailsActivity.class);
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                    byte[] bytes = stream.toByteArray();
-                                    intent.putExtra("image", bytes); //put bitmap image as array of bytes
-                                    intent.putExtra("prediction", mPred); // put title
-                                    intent.putExtra("scan_date", mScan_Date);
-                                    intent.putExtra("prediction_value", mPred_Value); //put description//put description
-                                    startActivity(intent); //start activity
+//                                //Views
+//                                TextView mScanDate = view.findViewById(R.id.date_of_scan);
+//                                TextView mScanDate2 = view.findViewById(R.id.date_of_scan2);
+//                                TextView mPredictionRight = view.findViewById(R.id.right_prediction);
+//                                TextView mPredictionLeft = view.findViewById(R.id.left_prediction);
+//                                ImageView mImageRight = view.findViewById(R.id.right_image);
+//                                ImageView mImageLeft = view.findViewById(R.id.left_image);
+//                                TextView mPredictionRightAll = view.findViewById(R.id.right_prediction_all);
+//                                TextView mPredictionLeftAll = view.findViewById(R.id.left_prediction_all);
+//                                //get data from views
+//                                String mScan_Date = mScanDate.getText().toString();
+//                                String mScan_Date2 = mScanDate2.getText().toString();
+//                                String mRight_Prediction = mPredictionRight.getText().toString();
+//                                String mLeft_Prediction = mPredictionLeft.getText().toString();
+//                                Drawable mDrawableRight = mImageRight.getDrawable();
+//                                byte[] right_bytes = drawabletoBytes(mDrawableRight);
+//                                Drawable mDrawableLeft = mImageLeft.getDrawable();
+//                                byte[] left_bytes = drawabletoBytes(mDrawableLeft);
+//
+//                                //pass this data to new activity
+//                                Intent intent = new Intent(view.getContext(), HistoryDetailsActivity.class);
+//                                    intent.putExtra("right_image", right_bytes); //put bitmap image as array of bytes
+//                                    intent.putExtra("left_image", left_bytes); //put bitmap image as array of bytes
+//                                    intent.putExtra("right_prediction", mRight_Prediction); // put title
+//                                    intent.putExtra("left_prediction", mLeft_Prediction); // put title
+//                                    intent.putExtra("scan_date", mScan_Date);
+//                                    intent.putExtra("scan_date2", mScan_Date2);//put description//put description
+//                                    startActivity(intent); //start activity
 
 
                             }
@@ -151,6 +156,12 @@ public class HistoryActivity extends AppCompatActivity {
         //set adapter to recyclerview
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
     }
-
+private byte[] drawabletoBytes(Drawable drawable){
+    Bitmap mBitmap = ((BitmapDrawable) drawable).getBitmap();
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    byte[] bytes = stream.toByteArray();
+    return  bytes;
+}
 
 }

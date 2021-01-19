@@ -66,12 +66,14 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="-70dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:shape="ring"
         app:cardBackgroundColor="@color/colorPrimaryLighter"
-        app:cardCornerRadius="15dp">
+        app:cardCornerRadius="15dp"
+        app:cardElevation="2dp">
+
         <ImageView
             android:id="@+id/loading_bar"
             android:layout_width="match_parent"

@@ -68,9 +68,12 @@ public class CompareImagesActivity extends AppCompatActivity {
         String previous_scan = getIntent().getStringExtra("previous_scan");
         String prediction = getIntent().getStringExtra("prediction");
         String ssim_report = null;
-
-        byte[] data = android.util.Base64.decode(image,Base64.DEFAULT);
-        Bitmap bmp = BitmapFactory.decodeByteArray(data,0,data.length);
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput(image));
+            mComparison.setImageBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         float ssim_int = Float.parseFloat(ssim);
         if(ssim_int >= 0.96){
             ssim_report = "The Image analysis indicates that the Diabetes Retinopathy has not changed and no new masses have formed since the last scan taken on: " + previous_date + ". The image shows new masses(if any) areas in blue marks.";
@@ -79,12 +82,11 @@ public class CompareImagesActivity extends AppCompatActivity {
             ssim_report = "The Image analysis indicates that the Diabetes Retinopathy has slightly regressed and a few new masses have formed since the last scan taken on: " + previous_date + ". The image shows new masses areas in blue marks.";
         }
         else {
-            ssim_report = "The Image analysis indicates that the Diabetes Retinopathy has gotten significantly worse and a number new masses have formed since the last scan taken on: " + previous_date + ". The image shows new masses areas in blue marks.";
+            ssim_report = "The Image analysis indicates that the Diabetes Retinopathy has gotten significantly worse and a number new masses have formed since the last scan taken on: " + previous_date + ". Kindly make a point to see a doctor as soon as possible. The image shows new masses areas in blue marks.";
 
         }
 
         mSsim.setText(ssim);
-        mComparison.setImageBitmap(bmp);
         mSsimReport.setText(ssim_report);
         mCurrentScan.setText(prediction);
         mPreviousScan.setText(previous_scan);

@@ -5,7 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,19 +52,15 @@ public class RightEyeTakePhotoActivity extends AppCompatActivity {
         mNothing   = findViewById(R.id.nothing);
         mSubmit = findViewById(R.id.submit_right);
         mReUploadImage = findViewById(R.id.reupload_image);
-
+        mSubmit.setEnabled(false);
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable mDrawable = mImage.getDrawable();
-                Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                //pass this data to new activity
-                Intent intent = new Intent(getApplicationContext(), LeftEyeTakePhotoActivity.class);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] bytes = stream.toByteArray();
-                intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
-                startActivity(intent); //start activity
+                final ProgressDialog pd = new ProgressDialog(RightEyeTakePhotoActivity.this);
+                pd.setMessage("Please wait processing images...");
+                pd.show();
+                getImageBitmap();
+                pd.dismiss();
             }
         });
         mReUploadImage.setOnClickListener(new View.OnClickListener() {
@@ -76,12 +75,21 @@ public class RightEyeTakePhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // if this is the result of our camera image request
-        Bitmap photo = null;
-        photo = (Bitmap) data.getExtras().get("data");
-        if (resultCode == RESULT_OK && data.getData()!=null) {
-            mNothing.setVisibility(View.GONE);
-            mImage.setImageBitmap(photo);
-
+        // if this is the result of our camera image request
+        if (requestCode == CAMERA_REQUEST_CODE) {
+            // getting bitmap of the image
+            Bitmap photo = null;
+            //photo = (Bitmap) Objects.requireNonNull(Objects.requireNonNull(data).getExtras()).get("data");
+            try {
+                photo = (Bitmap) data.getExtras().get("data");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (resultCode == RESULT_OK) {
+                mNothing.setVisibility(View.GONE);
+                mImage.setImageBitmap(photo);
+                mSubmit.setEnabled(true);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -154,6 +162,33 @@ public class RightEyeTakePhotoActivity extends AppCompatActivity {
             }
         } else {
             requestPermission();
+        }
+    }
+    private void getImageBitmap(){
+        if(mImage.getDrawable() != null) {
+
+            Drawable mDrawable = mImage.getDrawable();
+            Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+            //pass this data to new activity
+            Intent intent = new Intent(getApplicationContext(), LeftEyeTakePhotoActivity.class);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bytes = stream.toByteArray();
+            //intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
+            //intent.putExtra("Image", mBitmap);
+            String fileName = "current_right_image";//no .png or .jpg needed
+            try {
+                FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+                fo.write(bytes);
+                fo.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                fileName = null;
+            }
+            startActivity(intent); //start activity
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Whooops! an error occurred please try again",Toast.LENGTH_LONG).show();
         }
     }
 }

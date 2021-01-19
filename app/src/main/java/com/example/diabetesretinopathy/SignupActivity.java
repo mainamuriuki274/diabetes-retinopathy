@@ -103,7 +103,7 @@ public class SignupActivity extends AppCompatActivity{
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSignupBtn.setVisibility(View.GONE);
+                mSignupBtn.setEnabled(false);
                 mLoading.setVisibility(View.VISIBLE);
                 final String email = mTextEmail.getText().toString().trim();
                 final String username = mTextUsername.getText().toString().trim();
@@ -111,22 +111,22 @@ public class SignupActivity extends AppCompatActivity{
                 String confirm_password = mTextConfirmPassword.getText().toString().trim();
 
                 if(TextUtils.isEmpty(username)){
-                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mSignupBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextUsername.setError(getText(R.string.username_error));
                 }
                 else if(TextUtils.isEmpty(email)){
-                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mSignupBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextEmail.setError(getText(R.string.email_error));
                 }
                 else if(password.length() < 8){
-                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mSignupBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextPassword.setError(getText(R.string.password_error));
                 }
                 else if(!confirm_password.equals(password)){
-                    mSignupBtn.setVisibility(View.VISIBLE);
+                    mSignupBtn.setEnabled(true);
                     mLoading.setVisibility(View.GONE);
                     mTextConfirmPassword.setError(getText(R.string.confirm_password_error));
                 }
@@ -157,7 +157,7 @@ public class SignupActivity extends AppCompatActivity{
                                                             Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                                                             startActivity(i);
                                                             finish();
-                                                            mSignupBtn.setVisibility(View.VISIBLE);
+                                                            mSignupBtn.setEnabled(true);
                                                             mLoading.setVisibility(View.GONE);
                                                         }
                                                     })
@@ -165,7 +165,7 @@ public class SignupActivity extends AppCompatActivity{
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
                                                             Log.w(TAG, "Error adding document", e);
-                                                            mSignupBtn.setVisibility(View.VISIBLE);
+                                                            mSignupBtn.setEnabled(true);
                                                             mLoading.setVisibility(View.GONE);
                                                             Toast.makeText(getApplicationContext(),"Error creating user" , Toast.LENGTH_LONG).show();;
                                                         }
@@ -175,7 +175,7 @@ public class SignupActivity extends AppCompatActivity{
 
                                 }
                                 else{
-                                    mSignupBtn.setVisibility(View.VISIBLE);
+                                    mSignupBtn.setEnabled(true);
                                     mLoading.setVisibility(View.GONE);
                                     Toast.makeText(getApplicationContext(),"Error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();;
                                 }
@@ -183,7 +183,7 @@ public class SignupActivity extends AppCompatActivity{
                         });
                     }
                   else{
-                        mSignupBtn.setVisibility(View.VISIBLE);
+                        mSignupBtn.setEnabled(true);
                         mLoading.setVisibility(View.GONE);
                         mTextUsername.setError(getText(R.string.email_error));
                     }

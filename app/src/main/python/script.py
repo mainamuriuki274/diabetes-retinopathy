@@ -7,6 +7,27 @@ import base64
 import io
 from PIL import Image
 
+def crop_image_from_gray(img,tol=7):
+    if img.ndim ==2:
+        mask = img>tol
+        return img[np.ix_(mask.any(1),mask.any(0))]
+    elif img.ndim==3:
+        gray_img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        mask = gray_img>tol
+        
+        check_shape = img[:,:,0][np.ix_(mask.any(1),mask.any(0))].shape[0]
+        if (check_shape == 0): # image is too dark so that we crop out everything,
+            return img # return original image
+        else:
+            img1=img[:,:,0][np.ix_(mask.any(1),mask.any(0))]
+            img2=img[:,:,1][np.ix_(mask.any(1),mask.any(0))]
+            img3=img[:,:,2][np.ix_(mask.any(1),mask.any(0))]
+    #         print(img1.shape,img2.shape,img3.shape)
+            img = np.stack([img1,img2,img3],axis=-1)
+    #         print(img.shape)
+        return img
+
+
 def main(imageA,imageB):
     imageA = base64.b64decode(imageA)
     imageB = base64.b64decode(imageB)
@@ -16,6 +37,9 @@ def main(imageA,imageB):
 
     imageA = cv2.imdecode(np_imageA,cv2.IMREAD_UNCHANGED)
     imageB = cv2.imdecode(np_imageB,cv2.IMREAD_UNCHANGED)
+
+    imageA = crop_image_from_gray(imageA)
+    imageB = crop_image_from_gray(imageB)
 
     grayA = cv2.cvtColor(imageA, cv2.COLOR_RGB2GRAY)
     grayB = cv2.cvtColor(imageB, cv2.COLOR_RGB2GRAY)

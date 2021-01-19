@@ -38,7 +38,7 @@ public class ImageClassifier {
     private static final float IMAGE_STD = 1.0f;
     private static final float IMAGE_MEAN = 0.0f;
 
-    private static final int MAX_SIZE = 5;
+    private static final int MAX_SIZE = 3;
 
     /**
      * Image size along the x axis.
@@ -82,7 +82,7 @@ public class ImageClassifier {
          * The loaded TensorFlow Lite model.
          */
         MappedByteBuffer classifierModel = FileUtil.loadMappedFile(activity,
-                "tflite_model.tflite");
+                "dr_model_quant.tflite");
         // Loads labels out from the label file.
         labels = FileUtil.loadLabels(activity, "labels.txt");
 
@@ -136,7 +136,7 @@ public class ImageClassifier {
 
         // Find the best classifications by sorting predicitons based on confidence
         Collections.sort(recognitions);
-        // returning top 5 predicitons
+        // returning top 3 predicitons
         return recognitions.subList(0, MAX_SIZE);
     }
 

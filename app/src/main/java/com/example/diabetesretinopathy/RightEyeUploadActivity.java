@@ -5,16 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +27,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +42,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,24 +65,16 @@ public class RightEyeUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_right_eye_upload);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        mImage   = findViewById(R.id.imageView);
-        mFundusInstructions   = findViewById(R.id.fundus_information);
-        mNothing   = findViewById(R.id.nothing);
-        mSubmit = findViewById(R.id.submit_right);
-        mReUploadImage = findViewById(R.id.reupload_image);
-
+        initializeUI();
+        mSubmit.setEnabled(false);
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable mDrawable = mImage.getDrawable();
-                Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                //pass this data to new activity
-                Intent intent = new Intent(getApplicationContext(), LeftEyeUploadActivity.class);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] bytes = stream.toByteArray();
-                intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
-                startActivity(intent); //start activity
+                final ProgressDialog pd = new ProgressDialog(RightEyeUploadActivity.this);
+                pd.setMessage("Please wait processing images...");
+                pd.show();
+               getImageBitmap();
+                pd.dismiss();
             }
         });
         mReUploadImage.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +100,7 @@ public class RightEyeUploadActivity extends AppCompatActivity {
             // displaying this bitmap in imageview
             mNothing.setVisibility(View.GONE);
             mImage.setImageBitmap(photo);
+            mSubmit.setEnabled(true);
 
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,5 +176,48 @@ public class RightEyeUploadActivity extends AppCompatActivity {
         } else {
             requestPermission();
         }
+    }
+    private void getImageBitmap(){
+        if(mImage.getDrawable() != null) {
+
+            Drawable mDrawable = mImage.getDrawable();
+            Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+            //pass this data to new activity
+            Intent intent = new Intent(getApplicationContext(), LeftEyeUploadActivity.class);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] bytes = stream.toByteArray();
+            //intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
+            //intent.putExtra("Image", mBitmap);
+            String fileName = "current_right_image";//no .png or .jpg needed
+            try {
+                FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+                fo.write(bytes);
+                fo.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                fileName = null;
+            }
+            startActivity(intent); //start activity
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Whooops! an error occurred please try again",Toast.LENGTH_LONG).show();
+        }
+    }
+    private void initializeUI(){
+        mImage   = findViewById(R.id.imageView);
+        mFundusInstructions   = findViewById(R.id.fundus_information);
+        mNothing   = findViewById(R.id.nothing);
+        mSubmit = findViewById(R.id.submit_right);
+        mReUploadImage = findViewById(R.id.reupload_image);
+    }
+    private Bitmap gaussianBlur(String image){
+        Python py = Python.getInstance();
+        PyObject pyobj = py.getModule("gaussian_blur");
+        PyObject obj = pyobj.callAttr("gaussian_blur",image);
+        String result = obj.toString();
+        byte[] bytes = android.util.Base64.decode(result, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        return bitmap;
     }
 }

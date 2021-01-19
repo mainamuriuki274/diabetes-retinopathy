@@ -122,10 +122,10 @@
                     android:id="@+id/loading_bar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:contentDescription="@string/loading"
                     android:drawingCacheQuality="high"
                     android:indeterminateBehavior="repeat"
-                    android:visibility="gone"
-                    android:contentDescription="@string/loading" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/forgot_password_link"
