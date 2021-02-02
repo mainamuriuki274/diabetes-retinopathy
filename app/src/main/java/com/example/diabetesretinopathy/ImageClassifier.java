@@ -136,7 +136,7 @@ public class ImageClassifier {
 
         // Find the best classifications by sorting predicitons based on confidence
         Collections.sort(recognitions);
-        // returning top 3 predicitons
+        // returning top 5 predicitons
         return recognitions.subList(0, MAX_SIZE);
     }
 

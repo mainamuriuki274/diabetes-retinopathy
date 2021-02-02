@@ -42,6 +42,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -56,6 +57,7 @@ public class RightEyeUploadActivity extends AppCompatActivity {
     ImageView mImage;
     Button mReUploadImage,mSubmit;
     TextView mNothing,mFundusInstructions;
+    private EyeTypeClassifier eyeTypeClassifier;
     private static final int GALLERY_PERMISSION_REQUEST_CODE = 2000;
     private static final int GALLERY_REQUEST_CODE = 20001;
 
@@ -66,6 +68,11 @@ public class RightEyeUploadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_right_eye_upload);
         Objects.requireNonNull(getSupportActionBar()).hide();
         initializeUI();
+        try {
+            eyeTypeClassifier = new EyeTypeClassifier(this);
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(),"Image Classifier Error",Toast.LENGTH_LONG);
+        }
         mSubmit.setEnabled(false);
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,30 +186,51 @@ public class RightEyeUploadActivity extends AppCompatActivity {
     }
     private void getImageBitmap(){
         if(mImage.getDrawable() != null) {
+            ProgressDialog  dialog = new ProgressDialog(RightEyeUploadActivity.this);
+            dialog.setMessage("Please wait...");
+            dialog.show();
 
             Drawable mDrawable = mImage.getDrawable();
             Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-            //pass this data to new activity
-            Intent intent = new Intent(getApplicationContext(), LeftEyeUploadActivity.class);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            //intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
-            //intent.putExtra("Image", mBitmap);
-            String fileName = "current_right_image";//no .png or .jpg needed
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+                String fileName = "current_right_image";//no .png or .jpg needed
+                try {
+                    FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
+                    fo.write(bytes);
+                    fo.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    fileName = null;
+                }
+
             try {
-                FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
-                fo.write(bytes);
-                fo.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                fileName = null;
+                Bitmap right_bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("current_right_image"));
+                String eye = checkEye(right_bitmap).trim();
+                if(eye.equals("left")) {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Please Upload an Image of the Right Eye",Toast.LENGTH_LONG).show();
+                }
+            else{
+                    Intent intent = new Intent(getApplicationContext(), LeftEyeUploadActivity.class);
+                    startActivity(intent);
+                    finish();
+                    dialog.dismiss();
             }
-            startActivity(intent); //start activity
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
         else{
             Toast.makeText(getApplicationContext(), "Whooops! an error occurred please try again",Toast.LENGTH_LONG).show();
         }
+    }
+    private String checkEye(Bitmap bitmap){
+        List<EyeTypeClassifier.Recognition> prediction = eyeTypeClassifier.recognizeImage(bitmap, 0);
+        String name = prediction.get(0).getName();
+        return name;
     }
     private void initializeUI(){
         mImage   = findViewById(R.id.imageView);

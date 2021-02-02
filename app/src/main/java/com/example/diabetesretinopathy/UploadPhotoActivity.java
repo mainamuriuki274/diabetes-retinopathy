@@ -114,8 +114,8 @@ Button mOpthamologist;
             Bitmap left_bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("current_left_gaussian"));
             mRightImage.setImageBitmap(right_bitmap);
             mLeftImage.setImageBitmap(left_bitmap);
-            mRightPrediction.setText(prediction_right);
             mLeftPrediction.setText(prediction_left);
+            mRightPrediction.setText(prediction_right);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

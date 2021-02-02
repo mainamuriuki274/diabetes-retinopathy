@@ -58,7 +58,7 @@ public class LeftEyeUploadActivity extends AppCompatActivity {
     ImageView mImage;
     Button mReUploadImage,mSubmit;
     TextView mNothing,mFundusInstructions;
-
+    private EyeTypeClassifier eyeTypeClassifier;
     private static final int GALLERY_PERMISSION_REQUEST_CODE = 2000;
     private static final int GALLERY_REQUEST_CODE = 20001;
 
@@ -69,6 +69,11 @@ public class LeftEyeUploadActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         //Initializing UI elements
         initializeUI();
+        try {
+            eyeTypeClassifier = new EyeTypeClassifier(this);
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(),"Image Classifier Error",Toast.LENGTH_LONG);
+        }
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,15 +186,14 @@ public class LeftEyeUploadActivity extends AppCompatActivity {
     }
     private void getImageBitmap(){
         if(mImage.getDrawable() != null) {
+            ProgressDialog  dialog = new ProgressDialog(LeftEyeUploadActivity.this);
+            dialog.setMessage("Please wait...");
+            dialog.show();
             Drawable mDrawable = mImage.getDrawable();
             Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-            //pass this data to new activity
-            Intent intent = new Intent(getApplicationContext(), AnalyseImagesActivity.class);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
-            //intent.putExtra("right_image", bytes); //put bitmap image as array of bytes
-            //intent.putExtra("Image", mBitmap);
             String fileName = "current_left_image";//no .png or .jpg needed
             try {
                 FileOutputStream fo = openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -199,11 +203,33 @@ public class LeftEyeUploadActivity extends AppCompatActivity {
                 e.printStackTrace();
                 fileName = null;
             }
-            startActivity(intent); //start activity
+
+            try {
+                Bitmap left_bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("current_left_image"));
+                String eye = checkEye(left_bitmap);
+                if(eye.equals("right")) {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Please Upload an Image of the Left Eye",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent intent = new Intent(getApplicationContext(), AnalyseImagesActivity.class);
+                    startActivity(intent);
+                    finish();
+                    dialog.dismiss();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
         else{
             Toast.makeText(getApplicationContext(), "Whooops! an error occurred please try again",Toast.LENGTH_LONG).show();
         }
+    }
+    private String checkEye(Bitmap bitmap){
+        List<EyeTypeClassifier.Recognition> prediction = eyeTypeClassifier.recognizeImage(bitmap, 0);
+        String name = prediction.get(0).getName();
+        return name;
     }
     private void initializeUI(){
         mImage   = findViewById(R.id.imageView);

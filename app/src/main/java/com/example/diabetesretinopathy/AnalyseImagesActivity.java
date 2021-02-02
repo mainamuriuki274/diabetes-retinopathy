@@ -3,6 +3,7 @@ package com.example.diabetesretinopathy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -65,6 +66,7 @@ public class AnalyseImagesActivity extends AppCompatActivity {
     final String[] ssim_right = new String[1];
     private Bitmap right_bitmap = null;
     private Bitmap left_bitmap = null;
+    private ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,9 @@ public class AnalyseImagesActivity extends AppCompatActivity {
         {
             Python.start(new AndroidPlatform(getApplicationContext()));
         }
-
+            dialog = new ProgressDialog(AnalyseImagesActivity.this);
+            dialog.setMessage("Please wait processing images...");
+            dialog.show();
         try {
             right_bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("current_right_image"));
             left_bitmap = BitmapFactory.decodeStream(getApplicationContext().openFileInput("current_left_image"));
@@ -87,8 +91,6 @@ public class AnalyseImagesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
         try {
             imageClassifier = new ImageClassifier(this);
         } catch (IOException e) {
@@ -97,76 +99,14 @@ public class AnalyseImagesActivity extends AppCompatActivity {
         if(isNetworkConnected()){
             if(internetIsConnected()){
                 getPreviousImages();
-                Handler handler=new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                if(previous_left_bytes==null){
-                    last_date_scan = "none";
-                    ssim_left[0] = "0.00";
-                    ssim_right[0] = "0.00";
-                    right_prediction_value = predictImage(current_right_bytes,"right");
-                    left_prediction_value = predictImage(current_left_bytes,"left");
-                    savetoCloud();
-                    mCurrentProcess.setText("Successfully completed analysing images...");
-                    Intent intent = new Intent(getApplicationContext(), NoPreviousActivity.class);
-                    intent.putExtra("prediction_right", right_prediction_value);
-                    intent.putExtra("prediction_left", left_prediction_value);
-                    startActivity(intent);
-                    finish();
-                        }
-                else {
-                    right_prediction_value = predictImage(current_right_bytes,"right");
-                    left_prediction_value = predictImage(current_left_bytes,"left");
-                    compareImages();
-                    Handler handler=new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            savetoCloud();
-                        }
-                    }, 5000);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCurrentProcess.setText("Successfully completed analysing images...");
-                            Intent intent = new Intent(getApplicationContext(), UploadPhotoActivity.class);
-                            intent.putExtra("prediction_right", right_prediction_value);
-                            intent.putExtra("prediction_left", left_prediction_value);
-                            intent.putExtra("previous_date", last_date_scan);
-                            intent.putExtra("previous_scan_left", previous_scan_left);
-                            intent.putExtra("previous_scan_right", previous_scan_right);
-                            intent.putExtra("ssim_left", ssim_left[0]);
-                            intent.putExtra("ssim_right", ssim_right[0]);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, 5000);
-                }
-            }
-                }, 5000);
             }
 
             else{
-                right_prediction_value = predictImage(current_right_bytes,"right");
-                left_prediction_value = predictImage(current_left_bytes,"left");
-                mCurrentProcess.setText("Successfully completed analysing images...");
-                Intent intent = new Intent(getApplicationContext(), NoPreviousActivity.class);
-                intent.putExtra("prediction_right", right_prediction_value);
-                intent.putExtra("prediction_left", left_prediction_value);
-                startActivity(intent);
-                finish();
+                noprevious_or_nointernet();
             }
         }
         else{
-            right_prediction_value = predictImage(current_right_bytes,"right");
-            left_prediction_value = predictImage(current_left_bytes,"left");
-            mCurrentProcess.setText("Successfully completed analysing images...");
-            Intent intent = new Intent(getApplicationContext(), NoPreviousActivity.class);
-            intent.putExtra("prediction_right", right_prediction_value);
-            intent.putExtra("prediction_left", left_prediction_value);
-            startActivity(intent);
-            finish();
+            noprevious_or_nointernet();
         }
 
 
@@ -205,6 +145,8 @@ public class AnalyseImagesActivity extends AppCompatActivity {
                         e.printStackTrace();
                         fileName2 = null;
                     }
+
+                    saveandCompare();
                 }
             }
 
@@ -214,6 +156,52 @@ public class AnalyseImagesActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void saveandCompare(){
+        if(previous_left_bytes==null){
+            last_date_scan = "none";
+            ssim_left[0] = "0.00";
+            ssim_right[0] = "0.00";
+            right_prediction_value = predictImage(current_right_bytes,"right");
+            left_prediction_value = predictImage(current_left_bytes,"left");
+            savetoCloud();
+            mCurrentProcess.setText("Successfully completed analysing images...");
+            Intent intent = new Intent(getApplicationContext(), NoPreviousActivity.class);
+            intent.putExtra("prediction_right", right_prediction_value);
+            intent.putExtra("prediction_left", left_prediction_value);
+            startActivity(intent);
+            finish();
+            dialog.dismiss();
+        }
+        else {
+            right_prediction_value = predictImage(current_right_bytes, "right");
+            left_prediction_value = predictImage(current_left_bytes, "left");
+            compareImages();
+            savetoCloud();
+            mCurrentProcess.setText("Successfully completed analysing images...");
+            Intent intent = new Intent(getApplicationContext(), UploadPhotoActivity.class);
+            intent.putExtra("prediction_right", right_prediction_value);
+            intent.putExtra("prediction_left", left_prediction_value);
+            intent.putExtra("previous_date", last_date_scan);
+            intent.putExtra("previous_scan_left", previous_scan_left);
+            intent.putExtra("previous_scan_right", previous_scan_right);
+            intent.putExtra("ssim_left", ssim_left[0]);
+            intent.putExtra("ssim_right", ssim_right[0]);
+            startActivity(intent);
+            finish();
+            dialog.dismiss();
+        }
+    }
+    private void noprevious_or_nointernet(){
+        right_prediction_value = predictImage(current_right_bytes,"right");
+        left_prediction_value = predictImage(current_left_bytes,"left");
+        mCurrentProcess.setText("Successfully completed analysing images...");
+        Intent intent = new Intent(getApplicationContext(), NoPreviousActivity.class);
+        intent.putExtra("prediction_right", right_prediction_value);
+        intent.putExtra("prediction_left", left_prediction_value);
+        startActivity(intent);
+        finish();
+        dialog.dismiss();
     }
     private byte[] getImageBytes(String image) {
         Bitmap bitmap =null;
@@ -354,10 +342,6 @@ public class AnalyseImagesActivity extends AppCompatActivity {
     private void initializeUI() {
         mLoading = findViewById(R.id.searching);
         mCurrentProcess = findViewById(R.id.current_process);
-        Glide.with(getApplicationContext())
-                .asGif()
-                .load(R.drawable.searching)
-                .into(mLoading);
     }
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -394,7 +378,7 @@ public class AnalyseImagesActivity extends AppCompatActivity {
     }
     private String predictImage(byte[] bytes,String eye){
         mCurrentProcess.setText("Predicting submitted images...");
-        String image_string = getStringImage(current_right_bytes);
+        String image_string = getStringImage(bytes);
 
         Bitmap gaussian_image = gaussianBlur(image_string);
         storeImageLocally(gaussian_image,eye);
@@ -406,7 +390,7 @@ public class AnalyseImagesActivity extends AppCompatActivity {
         String name = prediction.get(0).getName();
         confidence = confidence*100;
         String formattedconfidence = String.format("%.02f", confidence);
-        String prediction_value = name + " confidence: " + formattedconfidence + "%";
+        String prediction_value = name + " Confidence: " + formattedconfidence + "%";
         return  prediction_value;
     }
     private void compareImages(){
