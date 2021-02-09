@@ -125,14 +125,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Moderate NPDR: 0.3921569%" />
+                        android:text="Moderate NPDR" />
 
                     <TextView
                         android:id="@+id/current_scan"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Moderate NPDR: 0.3921569%" />
+                        android:text="Moderate NPDR:" />
                 </LinearLayout>
 
                 <View

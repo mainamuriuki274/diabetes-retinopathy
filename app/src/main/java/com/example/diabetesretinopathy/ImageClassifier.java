@@ -38,7 +38,7 @@ public class ImageClassifier {
     private static final float IMAGE_STD = 1.0f;
     private static final float IMAGE_MEAN = 0.0f;
 
-    private static final int MAX_SIZE = 3;
+    private static final int MAX_SIZE = 5;
 
     /**
      * Image size along the x axis.
@@ -82,7 +82,7 @@ public class ImageClassifier {
          * The loaded TensorFlow Lite model.
          */
         MappedByteBuffer classifierModel = FileUtil.loadMappedFile(activity,
-                "dr_model_quant.tflite");
+                "dr_tflite_quant_model.tflite");
         // Loads labels out from the label file.
         labels = FileUtil.loadLabels(activity, "labels.txt");
 

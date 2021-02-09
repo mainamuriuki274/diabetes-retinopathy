@@ -93,31 +93,32 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Right Eye" />
+                    android:text="Right Eye"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Analysis Result" />
+                    android:text="Analysis Result"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/right_results"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="NO DR 39%"
-                    android:textStyle="bold" />
+                    android:text="NO DR " />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SSIM" />
+                    android:text="SSIM"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/right_ssim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="0.96"
-                    android:textStyle="bold" />
+                    android:text="0.96" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -172,31 +173,32 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Left Eye" />
+                    android:text="Left Eye"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Analysis Result" />
+                    android:text="Analysis Result"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/left_results"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="NO DR 39%"
-                    android:textStyle="bold" />
+                    android:text="NO DR" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="SSIM" />
+                    android:text="SSIM"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/left_ssim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="0.96"
-                    android:textStyle="bold" />
+                    android:text="0.96" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -215,7 +217,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"/>
+        android:visibility="visible">
+
+    </LinearLayout>
 
 
 </LinearLayout>

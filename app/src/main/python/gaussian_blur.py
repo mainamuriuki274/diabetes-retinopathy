@@ -35,7 +35,7 @@ def gaussian_blur(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = crop_image_from_gray(image)
     image = cv2.resize(image, (224, 224),interpolation=cv2.INTER_CUBIC)
-    image=cv2.addWeighted ( image,4, cv2.GaussianBlur( image , (0,0) , 10) ,-4 ,128)
+    image=cv2.addWeighted ( image,4, cv2.GaussianBlur( image , (0,0) , 30) ,-4 ,128)
     pil_im = Image.fromarray(image)
     buff = io.BytesIO()
     pil_im.save(buff,format="PNG")
